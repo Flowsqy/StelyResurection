@@ -1,0 +1,30 @@
+name: "StelyResurrection"
+author: "Flowsqy"
+version: "${version}"
+main: "fr.stelycube.stelyresurrection.StelyResurrectionPlugin"
+api-version: "1.13"
+commands:
+  setres:
+    description: "Set a respawn point"
+    usage: "/setres <name> [causes]"
+    permission: "res.setres"
+  delres:
+    description: "Delete a respawn point"
+    usage: "/delres <name>"
+    permission: "res.delres"
+permissions:
+  res.*:
+    default: op
+    children:
+      res.keepInventory: true
+      res.keepXp: true
+      res.setres: true
+      res.delres: true
+  res.keepInventory:
+    default: op
+  res.keepXp:
+    default: op
+  res.setres:
+    default: op
+  res.delres:
+    default: op

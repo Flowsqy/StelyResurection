@@ -1,0 +1,15 @@
+﻿prefix: "&7[&5StelyResurrection&7]"
+
+util:
+  noperm: "%prefix% &cYou don't have the permission to execute this command !"
+  invalidname: "%prefix% &cThere is not respawn point with the name &f%name%"
+commands:
+  setres: "%prefix% &a%name% &6saved as a respawn point"
+  setrescauses: "%prefix% &a%name% &6saved as a respawn point for the death causes: &a%causes%"
+  delres: "%prefix% &a%name% &6respawn point deleted"
+events:
+  death: ""
+  respawn: ""
+help:
+  setres: "%prefix% &6/setres <name> [causes]"
+  delres: "%prefix% &6/delres <name>"
