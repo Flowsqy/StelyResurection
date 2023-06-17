@@ -8,8 +8,8 @@ import java.util.*;
 public class RespawnPointMap implements Iterable<RespawnPoint> {
 
     private final Random random;
-    private RespawnPoint[] respawnAll;
     private final Map<EntityDamageEvent.DamageCause, RespawnPoint[]> respawnSpecifics;
+    private RespawnPoint[] respawnAll;
 
     public RespawnPointMap(@NotNull Random random) {
         this.random = random;
@@ -65,9 +65,6 @@ public class RespawnPointMap implements Iterable<RespawnPoint> {
         return Optional.of(newPoints);
     }
 
-    private record SpecificRespawnPoints(@NotNull EntityDamageEvent.DamageCause cause, @NotNull RespawnPoint[] points) {
-    }
-
     public boolean remove(@NotNull String respawnPointName) {
         boolean modified = false;
         final Optional<RespawnPoint[]> allPoints = remove(respawnAll, respawnPointName);
@@ -109,7 +106,6 @@ public class RespawnPointMap implements Iterable<RespawnPoint> {
         return Optional.of(newPoints);
     }
 
-
     @NotNull
     @Override
     public Iterator<RespawnPoint> iterator() {
@@ -118,6 +114,9 @@ public class RespawnPointMap implements Iterable<RespawnPoint> {
             respawnPoints.addAll(Arrays.asList(points));
         }
         return respawnPoints.iterator();
+    }
+
+    private record SpecificRespawnPoints(@NotNull EntityDamageEvent.DamageCause cause, @NotNull RespawnPoint[] points) {
     }
 
 }
