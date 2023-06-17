@@ -35,7 +35,7 @@ public class StelyResurrectionPlugin extends JavaPlugin {
         listenerLoader.load(this, respawnPointManager, messageConfig);
 
         final CommandLoader commandLoader = new CommandLoader();
-        commandLoader.load(this, messageConfig);
+        commandLoader.load(this, respawnPointManager, messageConfig);
     }
 
 }
