@@ -5,10 +5,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.jetbrains.annotations.Nullable;
 
 public class DeathListener implements Listener {
 
     private final String deathMessage;
+
+    public DeathListener(@Nullable String deathMessage) {
+        this.deathMessage = deathMessage;
+    }
 
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGH)
@@ -19,13 +24,14 @@ public class DeathListener implements Listener {
             e.getDrops().clear();
         }
 
-        if (e.getEntity().hasPermission("res.keepXp")) {
+        if (deadPlayer.hasPermission("res.keepXp")) {
             e.setKeepLevel(true);
             e.setDroppedExp(0);
         }
 
-        e.getEntity().sendMessage(deathMessage);
-        //this.message.sendMessage(e.getEntity(), "events.death");
+        if (deathMessage != null) {
+            deadPlayer.sendMessage(deathMessage);
+        }
     }
 
 }

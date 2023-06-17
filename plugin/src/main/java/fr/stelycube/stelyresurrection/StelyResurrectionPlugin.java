@@ -4,6 +4,8 @@ import fr.stelycube.stelyresurrection.commands.Commands;
 import fr.stelycube.stelyresurrection.config.ConfigLoader;
 import fr.stelycube.stelyresurrection.configs.MessageConfig;
 import fr.stelycube.stelyresurrection.events.Events;
+import fr.stelycube.stelyresurrection.listener.ListenerLoader;
+import fr.stelycube.stelyresurrection.respawnpoint.RespawnPointManager;
 import fr.stelycube.stelyresurrection.respawns.RespawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +29,15 @@ public class StelyResurrectionPlugin extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        final RespawnPointManager respawnPointManager = new RespawnPointManager();
+
+        final fr.stelycube.stelyresurrection.config.MessageConfig messageConfig = new fr.stelycube.stelyresurrection.config.MessageConfig();
+        messageConfig.load(configLoader, this, "message.yml");
+        messageConfig.loadPrefix();
+
+        final ListenerLoader listenerLoader = new ListenerLoader();
+        listenerLoader.load(this, respawnPointManager, messageConfig);
 
         instance = this;
         message = new MessageConfig("message.yml");
