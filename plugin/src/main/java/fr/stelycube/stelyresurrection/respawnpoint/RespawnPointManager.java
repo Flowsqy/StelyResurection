@@ -5,12 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
 public class RespawnPointManager {
 
+    private final RespawnPointStorage storage;
     private final RespawnPointMap respawnPoints;
 
     public RespawnPointManager() {
@@ -23,15 +25,22 @@ public class RespawnPointManager {
     }
 
     public void set(@NotNull String respawnPointName, @NotNull Location respawnPointLocation) {
-        respawnPoints.set()
+        set(respawnPointName, respawnPointLocation, Collections.emptySet());
     }
 
     public void set(@NotNull String respawnPointName, @NotNull Location respawnPointLocation, @NotNull Set<EntityDamageEvent.DamageCause> causes) {
-        respawnPoints.set()
+        final RespawnPoint respawnPoint = new RespawnPoint(respawnPointName, respawnPointLocation);
+        respawnPoints.set(respawnPoint, causes);
+        storage.set(respawnPoint, causes);
     }
 
     public boolean delete(@NotNull String respawnPointName) {
-        return
+        final boolean modified = respawnPoints.remove(respawnPointName);
+        if (!modified) {
+            return false;
+        }
+        storage.remove(respawnPointName);
+        return true;
     }
 
     @NotNull
