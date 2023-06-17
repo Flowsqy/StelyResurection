@@ -1,12 +1,9 @@
 package fr.stelycube.stelyresurrection;
 
-import fr.stelycube.stelyresurrection.commands.Commands;
+import fr.stelycube.stelyresurrection.command.CommandLoader;
 import fr.stelycube.stelyresurrection.config.ConfigLoader;
-import fr.stelycube.stelyresurrection.configs.MessageConfig;
-import fr.stelycube.stelyresurrection.events.Events;
 import fr.stelycube.stelyresurrection.listener.ListenerLoader;
 import fr.stelycube.stelyresurrection.respawnpoint.RespawnPointManager;
-import fr.stelycube.stelyresurrection.respawns.RespawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,8 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StelyResurrectionPlugin extends JavaPlugin {
-    private static StelyResurrectionPlugin instance;
-    private static MessageConfig message;
 
     public void onEnable() {
         final Logger logger = getLogger();
@@ -39,23 +34,8 @@ public class StelyResurrectionPlugin extends JavaPlugin {
         final ListenerLoader listenerLoader = new ListenerLoader();
         listenerLoader.load(this, respawnPointManager, messageConfig);
 
-        instance = this;
-        message = new MessageConfig("message.yml");
-        RespawnManager.load();
-        Events.load();
-        Commands.load();
-        super.onEnable();
+        final CommandLoader commandLoader = new CommandLoader();
+        commandLoader.load(this, messageConfig);
     }
 
-    public void onDisable() {
-        super.onDisable();
-    }
-
-    public static final StelyResurrectionPlugin getInstance() {
-        return instance;
-    }
-
-    public static final MessageConfig getMessage() {
-        return message;
-    }
 }
