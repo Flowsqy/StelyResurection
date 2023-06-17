@@ -2,6 +2,7 @@
 
 util:
   noperm: "%prefix% &cYou don't have the permission to execute this command !"
+  onlyplayer: "%prefix% &cYou can execute this command only as a player"
   invalidname: "%prefix% &cThere is not respawn point with the name &f%name%"
 commands:
   setres: "%prefix% &a%name% &6saved as a respawn point"

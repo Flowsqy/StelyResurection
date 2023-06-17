@@ -14,7 +14,13 @@ public class CommandLoader {
         final String permissionMessage = messageConfig.getMessage("util.noperm");
 
         final PluginCommand setResCommand = Objects.requireNonNull(plugin.getCommand("setres"));
-        final SetResCommand setResExecutor = new SetResCommand();
+        final SetResCommand setResExecutor = new SetResCommand(
+                respawnPointManager,
+                messageConfig.getMessage("help.setres"),
+                messageConfig.getMessage("util.onlyplayer"),
+                messageConfig.getMessage("commands.setres"),
+                messageConfig.getMessage("commands.setrescauses")
+        );
         setResCommand.setExecutor(setResExecutor);
         setResCommand.setTabCompleter(setResExecutor);
         setResCommand.setPermissionMessage(permissionMessage);
