@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 public class RespawnPointManager {
@@ -15,8 +14,9 @@ public class RespawnPointManager {
     private final RespawnPointStorage storage;
     private final RespawnPointMap respawnPoints;
 
-    public RespawnPointManager() {
-        this.respawnPoints = new RespawnPointMap(new Random());
+    public RespawnPointManager(@NotNull RespawnPointStorage storage, @NotNull RespawnPointMap respawnPoints) {
+        this.storage = storage;
+        this.respawnPoints = respawnPoints;
     }
 
     @NotNull
@@ -29,9 +29,10 @@ public class RespawnPointManager {
     }
 
     public void set(@NotNull String respawnPointName, @NotNull Location respawnPointLocation, @NotNull Set<EntityDamageEvent.DamageCause> causes) {
-        final RespawnPoint respawnPoint = new RespawnPoint(respawnPointName, respawnPointLocation);
+        final RespawnPoint respawnPoint = new RespawnPoint(respawnPointName, LazyLocation.of(respawnPointLocation));
         respawnPoints.set(respawnPoint, causes);
         storage.set(respawnPoint, causes);
+        storage.save();
     }
 
     public boolean delete(@NotNull String respawnPointName) {
@@ -40,16 +41,18 @@ public class RespawnPointManager {
             return false;
         }
         storage.remove(respawnPointName);
+        storage.save();
         return true;
     }
 
     @NotNull
     public Location getRespawnLocation(@NotNull Player respawnedPlayer, @NotNull EntityDamageEvent.DamageCause damageCause) {
         final Optional<RespawnPoint> respawnPoint = respawnPoints.getRandom(damageCause);
-        if (respawnPoint.isEmpty()) {
+        final Location location;
+        if (respawnPoint.isEmpty() || (location = respawnPoint.get().location().toLoc()) == null) {
             final Location bedLocation = respawnedPlayer.getBedSpawnLocation();
             return bedLocation == null ? respawnedPlayer.getWorld().getSpawnLocation() : bedLocation;
         }
-        return respawnPoint.get().location();
+        return location;
     }
 }

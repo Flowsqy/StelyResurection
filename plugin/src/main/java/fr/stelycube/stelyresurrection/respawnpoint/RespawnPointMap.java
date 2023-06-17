@@ -9,12 +9,19 @@ public class RespawnPointMap implements Iterable<RespawnPoint> {
 
     private final Random random;
     private RespawnPoint[] respawnAll;
-    private Map<EntityDamageEvent.DamageCause, RespawnPoint[]> respawnSpecifics;
+    private final Map<EntityDamageEvent.DamageCause, RespawnPoint[]> respawnSpecifics;
 
     public RespawnPointMap(@NotNull Random random) {
         this.random = random;
         respawnAll = new RespawnPoint[0];
         respawnSpecifics = new EnumMap<>(EntityDamageEvent.DamageCause.class);
+    }
+
+    public void load(@NotNull Set<RespawnPoint> allPoints, @NotNull Map<EntityDamageEvent.DamageCause, Set<RespawnPoint>> specifics) {
+        respawnAll = allPoints.toArray(new RespawnPoint[0]);
+        for (var entry : specifics.entrySet()) {
+            respawnSpecifics.put(entry.getKey(), entry.getValue().toArray(new RespawnPoint[0]));
+        }
     }
 
     public Optional<RespawnPoint> getRandom(@NotNull EntityDamageEvent.DamageCause damageCause) {
